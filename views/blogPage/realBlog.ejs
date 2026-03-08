@@ -29,7 +29,7 @@
                 <h2 class='mb-3' id="new-title">New</h2>
                 <% for( let post of blogPosts.slice((blogPosts.length - 3)) ) { %>
                 <div class="new-post-div mb-3">
-                    <a href="WebDevBlog/<%= post.id %>">
+                    <a href="/WebDevBlog/<%= post.id %>">
                         <h5><%= post.title %></h5>
                         <% let slicedPost = post.post %>
                         <p><%= slicedPost %></p>

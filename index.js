@@ -16,8 +16,57 @@ const {
     __dirname
 } = fileDirName(
     import.meta);
-//serves files 
-app.use(express.static(path.join(__dirname, '')));
+
+function sendAsset(directory) {
+    const baseDir = path.resolve(__dirname, directory);
+
+    return (req, res, next) => {
+        const relativePath = req.params[0];
+
+        if (!relativePath) {
+            res.sendStatus(404);
+            return;
+        }
+
+        const filePath = path.resolve(baseDir, relativePath);
+
+        if (filePath !== baseDir && !filePath.startsWith(`${baseDir}${path.sep}`)) {
+            res.sendStatus(403);
+            return;
+        }
+
+        res.sendFile(filePath, (err) => {
+            if (!err) {
+                return;
+            }
+
+            if (err.code === 'ENOENT') {
+                res.sendStatus(404);
+                return;
+            }
+
+            next(err);
+        });
+    };
+}
+
+app.get('/css/*', sendAsset('css'));
+app.get('/images/*', sendAsset('images'));
+app.get('/scripts/*', sendAsset('scripts'));
+app.get('/favicon.ico', (req, res, next) => {
+    res.sendFile(path.resolve(__dirname, 'favicon.ico'), (err) => {
+        if (!err) {
+            return;
+        }
+
+        if (err.code === 'ENOENT') {
+            res.sendStatus(404);
+            return;
+        }
+
+        next(err);
+    });
+});
 
 //Sets ejs as view engine
 app.set('view engine', 'ejs');
@@ -26,7 +75,6 @@ app.set('views', path.join(__dirname, '/views'))
 
 //DO NOT REMOVE - used for gCloud 
 const port = process.env.PORT || 8080;
-app.listen(port);
 
 //middleware
 app.use(express.urlencoded({
@@ -200,3 +248,9 @@ app.delete('/WebDevBlog/:postId', (req,res) => {
         res.redirect('/WebDevBlog')
 
 } )
+
+if (!process.env.VERCEL) {
+    app.listen(port);
+}
+
+export default app;
