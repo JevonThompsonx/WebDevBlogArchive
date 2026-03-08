@@ -1,4 +1,4 @@
-#  [Personal-site🐙🛸 ](https://web-dev-blogsite.onrender.com)
+#  [Personal-site🐙🛸 ](https://web-dev-blog-archive.vercel.app/)
 
 My own personal website that hosts all my public projects and acts as a resume  
 
