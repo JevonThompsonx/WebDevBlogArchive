@@ -12,7 +12,7 @@
   "author": "Jevon Thompson",
   "license": "ISC",
   "engines": {
-    "node": "20.x"
+    "node": "26.x"
   },
   "dependencies": {
     "ejs": "^3.1.9",
